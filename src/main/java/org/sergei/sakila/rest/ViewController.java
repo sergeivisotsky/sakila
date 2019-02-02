@@ -7,6 +7,8 @@ import org.sergei.sakila.model.AddressMetaData;
 import org.sergei.sakila.model.FieldType;
 import org.sergei.sakila.rest.dto.AddressDTO;
 import org.sergei.sakila.rest.dto.AddressMetaDataDTO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +27,8 @@ import java.util.List;
 @RequestMapping("/uiapi/v1/sakila/metadata")
 public class ViewController {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(ViewController.class);
+
     private final DataAccessObject dao;
 
     @Autowired
@@ -34,15 +38,15 @@ public class ViewController {
 
     @ApiOperation("Get address data and metadata")
     @GetMapping(value = "/get_address_data", produces = "application/json")
-    public ResponseEntity<AddressDTO> getAddressDataAndMeta(@RequestParam("city-id") long cityId,
-                                                            @RequestParam("postal-code") String postalCode) {
+    public ResponseEntity<AddressDTO> getAddressDataAndMeta(@RequestParam("cityId") long cityId,
+                                                            @RequestParam("postalCode") String postalCode) {
         Address address = dao.getAddressWithMetadata(cityId, postalCode);
 
         List<AddressMetaData> addressMetaData = address.getAddressMetadata();
 
         List<AddressMetaDataDTO> addressMetaDataDTOList = new LinkedList<>();
 
-        for (AddressMetaData addressMeta: addressMetaData) {
+        for (AddressMetaData addressMeta : addressMetaData) {
 
             AddressMetaDataDTO addressMetaDataDTO = AddressMetaDataDTO.AddressMetaDataDTOBuilder.anAddressMetaDataDTO()
                     .withFieldType(FieldType.valueOf(addressMeta.getUiDescription()))
