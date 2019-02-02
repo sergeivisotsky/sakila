@@ -36,7 +36,7 @@ public class AddressMetaData {
         private String uiDescription;
         private FieldType fieldType;
 
-        private AddressMetaDataBuilder() {
+        public AddressMetaDataBuilder() {
         }
 
         public static AddressMetaDataBuilder anAddressMetaData() {

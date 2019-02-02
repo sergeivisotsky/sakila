@@ -2,6 +2,7 @@ package org.sergei.sakila.jdbc;
 
 import org.sergei.sakila.model.Address;
 import org.sergei.sakila.model.AddressMetaData;
+import org.sergei.sakila.model.FieldType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,9 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author Sergei Visotsky
@@ -41,7 +44,18 @@ public class DataAccessObject {
         MapSqlParameterSource metaDataParams = new MapSqlParameterSource()
                 .addValue("cityId", cityId);
 
-        List<AddressMetaData> addressMetaData = jdbc.queryForList(metaDataSql, metaDataParams, AddressMetaData.class);
+        List<AddressMetaData> addressMetaDataList = new LinkedList<>();
+        AddressMetaData addressMetaData = jdbc.queryForObject(
+                metaDataSql, metaDataParams, (rs, rowNum) ->
+                        new AddressMetaData.AddressMetaDataBuilder()
+                                .withUiDescription(rs.getString("ui_description"))
+                                .withFieldType(FieldType.valueOf(rs.getString("fld_type")))
+                                .build()
+        );
+        addressMetaDataList.add(addressMetaData);
+        LOGGER.debug("Field type: {} and UI description: {}",
+                Objects.requireNonNull(addressMetaData).getFieldType(),
+                Objects.requireNonNull(addressMetaData).getUiDescription());
 
         final String addressSql =
                 "SELECT " +
@@ -59,14 +73,16 @@ public class DataAccessObject {
                 .addValue("cityId", cityId)
                 .addValue("postalCode", postalCode);
 
-        Address address = jdbc.queryForObject(addressSql, objectParams, (rs, rowNum) ->
-                new Address.AddressBuilder()
-                        .withFirstAddress(rs.getString("address"))
-                        .withSecondAddress(rs.getString("address2"))
-                        .withDistrict(rs.getString("district"))
-                        .withPostalCode(rs.getString("postal_code"))
-                        .withAddressMetadata(addressMetaData)
-                        .build());
+        Address address = jdbc.queryForObject(
+                addressSql, objectParams, (rs, rowNum) ->
+                        new Address.AddressBuilder()
+                                .withFirstAddress(rs.getString("address"))
+                                .withSecondAddress(rs.getString("address2"))
+                                .withDistrict(rs.getString("district"))
+                                .withPostalCode(rs.getString("postal_code"))
+                                .withAddressMetadata(addressMetaDataList)
+                                .build()
+        );
 
         LOGGER.debug("2nd SQL: {} executed with this params: {}", addressSql, objectParams.getValues());
 

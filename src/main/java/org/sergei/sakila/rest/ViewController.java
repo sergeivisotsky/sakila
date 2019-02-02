@@ -49,7 +49,7 @@ public class ViewController {
         for (AddressMetaData addressMeta : addressMetaData) {
 
             AddressMetaDataDTO addressMetaDataDTO = AddressMetaDataDTO.AddressMetaDataDTOBuilder.anAddressMetaDataDTO()
-                    .withFieldType(FieldType.valueOf(addressMeta.getUiDescription()))
+                    .withFieldType(addressMeta.getFieldType())
                     .withUiDescription(addressMeta.getUiDescription())
                     .build();
             addressMetaDataDTOList.add(addressMetaDataDTO);
