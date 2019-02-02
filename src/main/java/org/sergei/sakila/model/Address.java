@@ -6,36 +6,51 @@ import java.util.List;
  * @author Sergei Visotsky
  */
 public class Address {
-//    private String city;
+    //    private String city;
     private String firstAddress;
     private String secondAddress;
     private String district;
     private String postalCode;
     private List<AddressMetaData> addressMetadata;
 
-    public Address() {
+    private Address() {
+    }
+
+    public String getFirstAddress() {
+        return firstAddress;
+    }
+
+    public String getSecondAddress() {
+        return secondAddress;
+    }
+
+    public String getDistrict() {
+        return district;
+    }
+
+    public String getPostalCode() {
+        return postalCode;
+    }
+
+    public List<AddressMetaData> getAddressMetadata() {
+        return addressMetadata;
     }
 
     public static final class AddressBuilder {
-//        private String city;
+        //    private String city;
         private String firstAddress;
         private String secondAddress;
         private String district;
         private String postalCode;
         private List<AddressMetaData> addressMetadata;
 
-        private AddressBuilder() {
+        public AddressBuilder() {
         }
 
         public static AddressBuilder anAddress() {
             return new AddressBuilder();
         }
 
-        /*public AddressBuilder withCity(String city) {
-            this.city = city;
-            return this;
-        }
-*/
         public AddressBuilder withFirstAddress(String firstAddress) {
             this.firstAddress = firstAddress;
             return this;
@@ -63,12 +78,11 @@ public class Address {
 
         public Address build() {
             Address address = new Address();
-//            address.city = this.city;
-            address.secondAddress = this.secondAddress;
             address.firstAddress = this.firstAddress;
+            address.secondAddress = this.secondAddress;
+            address.addressMetadata = this.addressMetadata;
             address.postalCode = this.postalCode;
             address.district = this.district;
-            address.addressMetadata = this.addressMetadata;
             return address;
         }
     }

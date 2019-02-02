@@ -20,8 +20,8 @@ public class DatabaseConfiguration {
 
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
         dataSource.setUrl("jdbc:mysql://localhost:3306/sakila");
-        dataSource.setUsername("sakila");
-        dataSource.setPassword("sakila");
+        dataSource.setUsername("service");
+        dataSource.setPassword("service");
 
         return dataSource;
     }

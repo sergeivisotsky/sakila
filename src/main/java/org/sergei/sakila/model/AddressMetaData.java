@@ -8,14 +8,21 @@ public class AddressMetaData {
     private String uiDescription;
     private FieldType fieldType;
 
-    public AddressMetaData() {
+    private AddressMetaData() {
     }
 
-    public AddressMetaData(String uiDescription, FieldType fieldType) {
+    public String getUiDescription() {
+        return uiDescription;
+    }
+
+    public FieldType getFieldType() {
+        return fieldType;
+    }
+
+    private AddressMetaData(String uiDescription, FieldType fieldType) {
         this.uiDescription = uiDescription;
         this.fieldType = fieldType;
     }
-
 
     public static final class AddressMetaDataBuilder {
         private String uiDescription;
