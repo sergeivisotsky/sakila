@@ -23,7 +23,7 @@ import java.util.List;
  * @author Sergei Visotsky
  */
 @RestController
-@RequestMapping("/api/v1/metadata")
+@RequestMapping("/uiapi/v1/sakila/metadata")
 public class ViewController {
 
     private final DataAccessObject dao;
