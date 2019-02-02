@@ -20,20 +20,6 @@ public class DataAccessObject {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DataAccessObject.class);
 
-    private static final String META_DATA_SQL = "SELECT " +
-            "ma.ui_description, ma.fld_type " +
-            "FROM " +
-            "md_addr ma " +
-            "WHERE " +
-            "ma.city_id = :cityId";
-    private static final String ADDRESS_SQL = "SELECT " +
-            "c.city, a.address, a.address2, a.district, a.postal_code " +
-            "FROM " +
-            "address a " +
-            "INNER JOIN " +
-            "city c ON c.city_id = :cityId " +
-            "AND a.postal_code = :postalCode";
-
     private final DataSource dataSource;
 
     @Autowired
@@ -44,27 +30,51 @@ public class DataAccessObject {
     public Address getAddressWithMetadata(long cityId, String postalCode) {
         NamedParameterJdbcTemplate jdbc = new NamedParameterJdbcTemplate(dataSource);
 
+        final String metaDataSql = "SELECT " +
+                "ma.ui_description, ma.fld_type " +
+                "FROM " +
+                "md_addr ma " +
+                "WHERE " +
+                "ma.city_id = :cityId";
         MapSqlParameterSource metaDataParams = new MapSqlParameterSource();
         metaDataParams.addValue("cityId", cityId);
 
-        List<AddressMetaData> addressMetadata = jdbc.queryForList(META_DATA_SQL, metaDataParams, AddressMetaData.class);
+//        List<AddressMetaData> addressMetaData = new LinkedList<>();
 
-        LOGGER.debug("1st SQL: {} executed with this params {}", META_DATA_SQL, metaDataParams);
+        List<AddressMetaData> addressMetadataFromDb = jdbc.queryForList(metaDataSql, metaDataParams, AddressMetaData.class);
 
+        /*int counter = 0;
+        for (AddressMetaData addressMetaData1 : addressMetadataFromDb) {
+            addressMetaData1.setUiDescription(addressMetadataFromDb.get(counter).getUiDescription());
+            addressMetaData1.setFieldType(addressMetadataFromDb.get(counter).getFieldType());
+            addressMetaData.add(addressMetaData1);
+            counter++;
+        }*/
+
+        LOGGER.debug("1st SQL: {} executed with this params {}", metaDataSql, metaDataParams.getValues());
+
+        final String addressSql = "SELECT " +
+                "c.city, a.address, a.address2, a.district, a.postal_code " +
+                "FROM " +
+                "address a " +
+                "INNER JOIN " +
+                "city c ON c.city_id = :cityId " +
+                "AND a.postal_code = :postalCode";
         MapSqlParameterSource objectParams = new MapSqlParameterSource();
         objectParams.addValue("cityId", cityId);
         objectParams.addValue("postalCode", postalCode);
 
-        Address address = jdbc.queryForObject(ADDRESS_SQL, objectParams, (rs, rowNum) ->
+
+        Address address = jdbc.queryForObject(addressSql, objectParams, (rs, rowNum) ->
                 new Address.AddressBuilder()
                         .withFirstAddress(rs.getString("address"))
                         .withSecondAddress(rs.getString("address2"))
                         .withDistrict(rs.getString("district"))
                         .withPostalCode(rs.getString("postal_code"))
-                        .withAddressMetadata(addressMetadata)
+                        .withAddressMetadata(addressMetadataFromDb)
                         .build());
 
-        LOGGER.debug("2nd SQL: {} executed with this params {}", ADDRESS_SQL, objectParams);
+        LOGGER.debug("2nd SQL: {} executed with this params {}", addressSql, objectParams.getValues());
 
         return address;
     }

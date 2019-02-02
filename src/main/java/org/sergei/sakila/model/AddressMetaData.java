@@ -19,6 +19,14 @@ public class AddressMetaData {
         return fieldType;
     }
 
+    public void setUiDescription(String uiDescription) {
+        this.uiDescription = uiDescription;
+    }
+
+    public void setFieldType(FieldType fieldType) {
+        this.fieldType = fieldType;
+    }
+
     private AddressMetaData(String uiDescription, FieldType fieldType) {
         this.uiDescription = uiDescription;
         this.fieldType = fieldType;
