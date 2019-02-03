@@ -14,7 +14,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -34,33 +33,39 @@ public class MetaDataService implements IMetaDataService {
     }
 
     @Override
-    public PaymentFormDataDTO getPaymentFromDataAndMetaData(long paymentId) {
-        PaymentFormData paymentFormData = dao.getPaymentFromDataAndMetaData(paymentId);
+    public List<PaymentFormDataDTO> getPaymentFromDataAndMetaData(long paymentId) {
+        List<PaymentFormDataDTO> pfdDTOList = new LinkedList<>();
 
-        List<PaymentFormMetaData> pfmd = paymentFormData.getPaymentFormMetaData();
+        // Find collection od all items of PaymentFormData
+        List<PaymentFormData> pfdList = dao.getPaymentFromDataAndMetaData(paymentId);
 
-        // Conversion from data object to DTO started form this place
-        List<PaymentFormMetaDataDTO> paymentFormDataDTOList = new LinkedList<>();
-
-        for (PaymentFormMetaData paymentFormMetaData : pfmd) {
-            PaymentFormMetaDataDTO pfmdDTO = PaymentFormMetaDataDTO.PaymentFormMetaDataDTOBuilder
-                    .aPaymentFormMetaDataDTO()
-                    .withUiDescription(paymentFormMetaData.getUiDescription())
-                    .withFieldType(String.valueOf(paymentFormMetaData.getLanguageType()))
-                    .withLanguageType(String.valueOf(paymentFormMetaData.getLanguageType()))
+        // Mapping into the DTO
+        for (int i = 0; i <= pfdList.size(); i++) {
+            List<PaymentFormMetaDataDTO> pfmdDTOList = new LinkedList<>();
+            // Find collection od all items of PaymentFormData for each element
+            List<PaymentFormMetaData> pfmdList = pfdList.get(i).getPaymentFormMetaData();
+            for (PaymentFormMetaData pfmd : pfmdList) {
+                PaymentFormMetaDataDTO pfmdDTO = PaymentFormMetaDataDTO.PaymentFormMetaDataDTOBuilder.aPaymentFormMetaDataDTO()
+                        .withUiDescription(pfmd.getUiDescription())
+                        .withFieldType(String.valueOf(pfmd.getFieldType()))
+                        .withLanguageType(String.valueOf(pfmd.getLanguageType()))
+                        .build();
+                pfmdDTOList.add(pfmdDTO);
+            }
+            PaymentFormDataDTO pfdDTO = PaymentFormDataDTO.PaymentFormDataDTOBuilder.aPaymentFormDataDTO()
+                    .withFirstName(pfdList.get(i++).getFirstName())
+                    .withLastName(pfdList.get(i++).getLastName())
+                    .withEmail(pfdList.get(i++).getEmail())
+                    .withCreateDate(pfdList.get(i++).getCreateDate())
+                    .withLastUpdate(pfdList.get(i++).getLastUpdate())
+                    .withRentalId(pfdList.get(i++).getRentalId())
+                    .withAmount(pfdList.get(i++).getAmount())
+                    .withPaymentFormMetaData(pfmdDTOList)
                     .build();
-            paymentFormDataDTOList.add(pfmdDTO);
+            pfdDTOList.add(pfdDTO);
         }
 
-        return PaymentFormDataDTO.PaymentFormDataDTOBuilder.aPaymentFormDataDTO()
-                .withFirstName(paymentFormData.getFirstName())
-                .withLastName(paymentFormData.getLastName())
-                .withEmail(paymentFormData.getEmail())
-                .withCreateDate(paymentFormData.getCreateDate())
-                .withLastUpdate(paymentFormData.getLastUpdate())
-                .withRentalId(paymentFormData.getRentalId())
-                .withAmount(paymentFormData.getAmount())
-                .build();
+        return pfdDTOList;
     }
 
     @Override

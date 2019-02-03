@@ -14,14 +14,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 /**
  * @author Sergei Visotsky
  */
 @RestController
 @RequestMapping("/uiapi/v1/sakila/metadata")
 public class ViewController {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(ViewController.class);
 
     private final IMetaDataService metaDataService;
 
@@ -32,7 +32,7 @@ public class ViewController {
 
     @ApiOperation("Get payment data and metadata")
     @GetMapping(value = "/get_payment_data", produces = "application/json")
-    public ResponseEntity<PaymentFormDataDTO> getPaymentDataAndMeta(@RequestParam("paymentId") long paymentId) {
+    public ResponseEntity<List<PaymentFormDataDTO>> getPaymentDataAndMeta(@RequestParam("paymentId") long paymentId) {
         return new ResponseEntity<>(metaDataService.getPaymentFromDataAndMetaData(paymentId), HttpStatus.OK);
     }
 

@@ -12,7 +12,7 @@ import javax.sql.DataSource;
  */
 @Configuration
 @ComponentScan("org.sergei.sakila.jdbc")
-public class DatabaseConfiguration {
+public class DatabaseConfig {
 
     @Bean
     public DataSource dataSource() {

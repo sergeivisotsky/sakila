@@ -55,6 +55,38 @@ public class PaymentFormData {
         return amount;
     }
 
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    public void setLastUpdate(Date lastUpdate) {
+        this.lastUpdate = lastUpdate;
+    }
+
+    public void setRentalId(Long rentalId) {
+        this.rentalId = rentalId;
+    }
+
+    public void setAmount(Integer amount) {
+        this.amount = amount;
+    }
+
+    public void setPaymentFormMetaData(List<PaymentFormMetaData> paymentFormMetaData) {
+        this.paymentFormMetaData = paymentFormMetaData;
+    }
+
     public static final class PaymentFormDataBuilder {
         private String firstName;
         private String lastName;

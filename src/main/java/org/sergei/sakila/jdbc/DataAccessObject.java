@@ -29,7 +29,7 @@ public class DataAccessObject implements IDataAccessObject {
     }
 
     @Override
-    public PaymentFormData getPaymentFromDataAndMetaData(long paymentId) {
+    public List<PaymentFormData> getPaymentFromDataAndMetaData(long paymentId) {
         NamedParameterJdbcTemplate jdbc = new NamedParameterJdbcTemplate(dataSource);
         final String paymentFormMetaDataSql =
                 "SELECT " +
@@ -37,7 +37,7 @@ public class DataAccessObject implements IDataAccessObject {
                         "mp.field_type, " +
                         "mp.lang_type " +
                         "FROM " +
-                        "    sakila.md_payment mp " +
+                        "    md_payment mp " +
                         "WHERE " +
                         "    mp.payment_id = :paymentId";
         MapSqlParameterSource params = new MapSqlParameterSource()
@@ -62,24 +62,25 @@ public class DataAccessObject implements IDataAccessObject {
                         "    c.email, " +
                         "    c.create_date, " +
                         "    c.last_update, " +
-                        "    p.rental_id ," +
+                        "    p.rental_id, " +
                         "    p.amount " +
                         "FROM " +
-                        "    sakila.customer c " +
+                        "    customer c " +
                         "        INNER JOIN " +
-                        "    sakila.payment p ON c.customer_id = :paymentId";
+                        "    payment p ON c.customer_id = :paymentId";
 
-        return jdbc.queryForObject(paymentFormDataSql, params, (rs, rowNum) ->
-                new PaymentFormData.PaymentFormDataBuilder()
-                        .withFirstName(rs.getString("first_name"))
-                        .withLastName(rs.getString("last_name"))
-                        .withEmail(rs.getString("email"))
-                        .withCreateDate(rs.getDate("create_date"))
-                        .withLastUpdate(rs.getDate("last_update"))
-                        .withRentalId(rs.getLong("rental_id"))
-                        .withAmount(rs.getInt("amount"))
-                        .build()
-        );
+        // FIXME: Query dot work
+        return jdbc.query(paymentFormDataSql,
+                (rs, rowNum) ->
+                        new PaymentFormData.PaymentFormDataBuilder()
+                                .withFirstName(rs.getString("first_name"))
+                                .withLastName(rs.getString("last_name"))
+                                .withEmail(rs.getString("email"))
+                                .withCreateDate(rs.getDate("create_date"))
+                                .withLastUpdate(rs.getDate("last_update"))
+                                .withRentalId(rs.getLong("rental_id"))
+                                .withAmount(rs.getInt("amount"))
+                                .build());
     }
 
     @Override
@@ -120,11 +121,11 @@ public class DataAccessObject implements IDataAccessObject {
                         "    a.city_id, " +
                         "    ci.city " +
                         "FROM " +
-                        "    sakila.customer c " +
+                        "    customer c " +
                         "        INNER JOIN " +
-                        "    sakila.address a ON c.address_id = a.address_id " +
+                        "    address a ON c.address_id = a.address_id " +
                         "        INNER JOIN " +
-                        "    sakila.city ci ON ci.city_id = a.address_id " +
+                        "    city ci ON ci.city_id = a.address_id " +
                         "WHERE " +
                         "    a.city_id = :cityId AND c.address_id = :addressId";
         MapSqlParameterSource objectParams = new MapSqlParameterSource()
