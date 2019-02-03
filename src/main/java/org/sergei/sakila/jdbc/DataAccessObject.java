@@ -83,7 +83,7 @@ public class DataAccessObject implements IDataAccessObject {
     }
 
     @Override
-    public Address getAddressWithMetadata(long cityId, String postalCode) {
+    public Address getAddressWithMetadata(long cityId, long addressId) {
         NamedParameterJdbcTemplate jdbc = new NamedParameterJdbcTemplate(dataSource);
 
         final String addressMetaDataSql =
@@ -112,32 +112,40 @@ public class DataAccessObject implements IDataAccessObject {
 
         final String addressSql =
                 "SELECT " +
-                        "    c.city, " +
+                        "    c.first_name, " +
+                        "    c.last_name, " +
+                        "    c.email, " +
                         "    a.address, " +
-                        "    a.address2, " +
                         "    a.district, " +
-                        "    a.postal_code " +
+                        "    a.city_id, " +
+                        "    ci.city " +
                         "FROM " +
-                        "    address a " +
-                        "INNER JOIN " +
-                        "    city c ON c.city_id = :cityId " +
-                        "AND a.postal_code = :postalCode";
+                        "    sakila.customer c " +
+                        "        INNER JOIN " +
+                        "    sakila.address a ON c.address_id = a.address_id " +
+                        "        INNER JOIN " +
+                        "    sakila.city ci ON ci.city_id = a.address_id " +
+                        "WHERE " +
+                        "    a.city_id = :cityId AND c.address_id = :addressId";
         MapSqlParameterSource objectParams = new MapSqlParameterSource()
                 .addValue("cityId", cityId)
-                .addValue("postalCode", postalCode);
+                .addValue("addressId", addressId);
 
         Address address = jdbc.queryForObject(
                 addressSql, objectParams,
                 (rs, rowNum) ->
                         new Address.AddressBuilder()
-                                .withFirstAddress(rs.getString("address"))
-                                .withSecondAddress(rs.getString("address2"))
+                                .withFirstName(rs.getString("first_name"))
+                                .withLastName(rs.getString("last_name"))
+                                .withEmail(rs.getString("email"))
+                                .withAddress(rs.getString("address"))
                                 .withDistrict(rs.getString("district"))
-                                .withPostalCode(rs.getString("postal_code"))
+                                .withCityId(rs.getLong("city_id"))
+                                .withCity(rs.getString("city"))
                                 .withAddressMetadata(addressMetaDataList)
                                 .build()
         );
-
+        LOGGER.debug("Address data taken from DB: {}", Objects.requireNonNull(address).toString());
         LOGGER.debug("2nd SQL: {} executed with this params: {}", addressSql, objectParams.getValues());
 
         return address;

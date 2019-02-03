@@ -9,5 +9,5 @@ import org.sergei.sakila.rest.dto.PaymentFormDataDTO;
 public interface IMetaDataService {
     PaymentFormDataDTO getPaymentFromDataAndMetaData(long paymentId);
 
-    AddressDTO getAddressWithMetadata(long cityId, String postalCode);
+    AddressDTO getAddressWithMetadata(long cityId, long addressId);
 }

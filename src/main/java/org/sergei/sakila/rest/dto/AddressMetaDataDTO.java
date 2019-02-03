@@ -14,6 +14,14 @@ public class AddressMetaDataDTO {
     private AddressMetaDataDTO() {
     }
 
+    public String getUiDescription() {
+        return uiDescription;
+    }
+
+    public FieldType getFieldType() {
+        return fieldType;
+    }
+
     public static final class AddressMetaDataDTOBuilder {
         private String uiDescription;
         private FieldType fieldType;
@@ -41,5 +49,13 @@ public class AddressMetaDataDTO {
             addressMetaDataDTO.fieldType = this.fieldType;
             return addressMetaDataDTO;
         }
+    }
+
+    @Override
+    public String toString() {
+        return "AddressMetaDataDTO{" +
+                "uiDescription='" + uiDescription + '\'' +
+                ", fieldType=" + fieldType +
+                '}';
     }
 }

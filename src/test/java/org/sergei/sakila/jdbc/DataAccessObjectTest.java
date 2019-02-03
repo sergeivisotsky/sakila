@@ -21,7 +21,7 @@ public class DataAccessObjectTest {
 
     @Test
     public void testDataAccessObject() {
-        Address address = dao.getAddressWithMetadata(463, "35200");
-        assertEquals("121 Loja Avenue", address.getFirstAddress());
+        Address address = dao.getAddressWithMetadata(274, 300);
+        assertEquals("DAISY", address.getFirstName());
     }
 }

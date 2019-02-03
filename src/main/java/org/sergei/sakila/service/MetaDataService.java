@@ -9,9 +9,12 @@ import org.sergei.sakila.rest.dto.AddressDTO;
 import org.sergei.sakila.rest.dto.AddressMetaDataDTO;
 import org.sergei.sakila.rest.dto.PaymentFormDataDTO;
 import org.sergei.sakila.rest.dto.PaymentFormMetaDataDTO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -20,6 +23,8 @@ import java.util.List;
  */
 @Service
 public class MetaDataService implements IMetaDataService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(MetaDataService.class);
 
     private final IDataAccessObject dao;
 
@@ -59,8 +64,10 @@ public class MetaDataService implements IMetaDataService {
     }
 
     @Override
-    public AddressDTO getAddressWithMetadata(long cityId, String postalCode) {
-        Address address = dao.getAddressWithMetadata(cityId, postalCode);
+    public AddressDTO getAddressWithMetadata(long cityId, long addressId) {
+        Address address = dao.getAddressWithMetadata(cityId, addressId);
+
+        LOGGER.debug("Address data taken from DB in service layer: {}", address.toString());
         List<AddressMetaData> addressMetaData = address.getAddressMetadata();
 /*        if (address.equals(0) || addressMetaData.equals(0)) {
             new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -77,11 +84,17 @@ public class MetaDataService implements IMetaDataService {
             addressMetaDataDTOList.add(addressMetaDataDTO);
         }
 
+        addressMetaDataDTOList.forEach(addressMetaDataDTO ->
+                LOGGER.debug("This particular address metadata in Service layer: {}", addressMetaDataDTO.toString()));
+
         return AddressDTO.AddressDTOBuilder.anAddressDTO()
-                .withFirstAddress(address.getFirstAddress())
-                .withSecondAddress(address.getSecondAddress())
+                .withFirstName(address.getFirstName())
+                .withLastName(address.getLastName())
+                .withEmail(address.getDistrict())
+                .withAddress(address.getAddress())
                 .withDistrict(address.getDistrict())
-                .withPostalCode(address.getPostalCode())
+                .withCityId(address.getCityId())
+                .withCity(address.getCity())
                 .withAddressMetadata(addressMetaDataDTOList)
                 .build();
     }

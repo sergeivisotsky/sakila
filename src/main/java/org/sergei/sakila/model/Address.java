@@ -9,42 +9,58 @@ import java.util.List;
  */
 @Immutable
 public class Address {
-    //    private String city;
-    private String firstAddress;
-    private String secondAddress;
+    private String firstName;
+    private String lastName;
+    private String email;
+    private String address;
     private String district;
-    private String postalCode;
+    private Long cityId;
+    private String city;
     private List<AddressMetaData> addressMetadata;
 
     private Address() {
-    }
-
-    public String getFirstAddress() {
-        return firstAddress;
-    }
-
-    public String getSecondAddress() {
-        return secondAddress;
-    }
-
-    public String getDistrict() {
-        return district;
-    }
-
-    public String getPostalCode() {
-        return postalCode;
     }
 
     public List<AddressMetaData> getAddressMetadata() {
         return addressMetadata;
     }
 
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public String getDistrict() {
+        return district;
+    }
+
+    public Long getCityId() {
+        return cityId;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
     public static final class AddressBuilder {
-        //    private String city;
-        private String firstAddress;
-        private String secondAddress;
+        private String firstName;
+        private String lastName;
+        private String email;
+        private String address;
         private String district;
-        private String postalCode;
+        private Long cityId;
+        private String city;
         private List<AddressMetaData> addressMetadata;
 
         public AddressBuilder() {
@@ -54,13 +70,23 @@ public class Address {
             return new AddressBuilder();
         }
 
-        public AddressBuilder withFirstAddress(String firstAddress) {
-            this.firstAddress = firstAddress;
+        public AddressBuilder withFirstName(String firstName) {
+            this.firstName = firstName;
             return this;
         }
 
-        public AddressBuilder withSecondAddress(String secondAddress) {
-            this.secondAddress = secondAddress;
+        public AddressBuilder withLastName(String lastName) {
+            this.lastName = lastName;
+            return this;
+        }
+
+        public AddressBuilder withEmail(String email) {
+            this.email = email;
+            return this;
+        }
+
+        public AddressBuilder withAddress(String address) {
+            this.address = address;
             return this;
         }
 
@@ -69,8 +95,13 @@ public class Address {
             return this;
         }
 
-        public AddressBuilder withPostalCode(String postalCode) {
-            this.postalCode = postalCode;
+        public AddressBuilder withCityId(Long cityId) {
+            this.cityId = cityId;
+            return this;
+        }
+
+        public AddressBuilder withCity(String city) {
+            this.city = city;
             return this;
         }
 
@@ -81,12 +112,29 @@ public class Address {
 
         public Address build() {
             Address address = new Address();
-            address.firstAddress = this.firstAddress;
-            address.secondAddress = this.secondAddress;
+            address.firstName = this.firstName;
+            address.city = this.city;
             address.addressMetadata = this.addressMetadata;
-            address.postalCode = this.postalCode;
+            address.cityId = this.cityId;
             address.district = this.district;
+            address.email = this.email;
+            address.address = this.address;
+            address.lastName = this.lastName;
             return address;
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Address{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", address='" + address + '\'' +
+                ", district='" + district + '\'' +
+                ", cityId=" + cityId +
+                ", city='" + city + '\'' +
+                ", addressMetadata=" + addressMetadata +
+                '}';
     }
 }

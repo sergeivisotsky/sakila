@@ -9,5 +9,5 @@ import org.sergei.sakila.model.PaymentFormData;
 public interface IDataAccessObject {
     PaymentFormData getPaymentFromDataAndMetaData(long paymentId);
 
-    Address getAddressWithMetadata(long cityId, String postalCode);
+    Address getAddressWithMetadata(long cityId, long addressId);
 }

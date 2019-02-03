@@ -14,6 +14,18 @@ public class PaymentFormMetaDataDTO {
     private PaymentFormMetaDataDTO() {
     }
 
+    public String getUiDescription() {
+        return uiDescription;
+    }
+
+    public String getFieldType() {
+        return fieldType;
+    }
+
+    public String getLanguageType() {
+        return languageType;
+    }
+
     public static final class PaymentFormMetaDataDTOBuilder {
         private String uiDescription;
         private String fieldType;

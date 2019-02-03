@@ -22,6 +22,38 @@ public class PaymentFormDataDTO {
     private PaymentFormDataDTO() {
     }
 
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public Date getLastUpdate() {
+        return lastUpdate;
+    }
+
+    public Long getRentalId() {
+        return rentalId;
+    }
+
+    public Integer getAmount() {
+        return amount;
+    }
+
+    public List<PaymentFormMetaDataDTO> getPaymentFormMetaData() {
+        return paymentFormMetaData;
+    }
+
     public static final class PaymentFormDataDTOBuilder {
         private String firstName;
         private String lastName;
