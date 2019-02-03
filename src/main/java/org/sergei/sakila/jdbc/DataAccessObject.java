@@ -89,7 +89,7 @@ public class DataAccessObject implements IDataAccessObject {
         final String addressMetaDataSql =
                 "SELECT " +
                         "    ma.ui_description, " +
-                        "    ma.fld_type " +
+                        "    ma.field_type " +
                         "FROM " +
                         "    md_addr ma " +
                         "WHERE " +
@@ -102,7 +102,7 @@ public class DataAccessObject implements IDataAccessObject {
                 addressMetaDataSql, metaDataParams, (rs, rowNum) ->
                         new AddressMetaData.AddressMetaDataBuilder()
                                 .withUiDescription(rs.getString("ui_description"))
-                                .withFieldType(FieldType.valueOf(rs.getString("fld_type")))
+                                .withFieldType(FieldType.valueOf(rs.getString("field_type")))
                                 .build()
         );
         addressMetaDataList.add(addressMetaData);
