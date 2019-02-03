@@ -45,7 +45,8 @@ public class DataAccessObject implements IDataAccessObject {
 
         List<PaymentFormMetaData> paymentFormMetaDataList = new LinkedList<>();
         PaymentFormMetaData paymentFormMetaData = jdbc.queryForObject(
-                paymentFormMetaDataSql, params, (rs, rowNum) ->
+                paymentFormMetaDataSql, params,
+                (rs, rowNum) ->
                         new PaymentFormMetaData.PaymentFormMetaDataBuilder()
                                 .withUiDescription(rs.getString("ui_description"))
                                 .withFieldType(FieldType.valueOf(rs.getString("field_type")))
@@ -87,12 +88,12 @@ public class DataAccessObject implements IDataAccessObject {
 
         final String addressMetaDataSql =
                 "SELECT " +
-                        "ma.ui_description, " +
-                        "ma.fld_type " +
+                        "    ma.ui_description, " +
+                        "    ma.fld_type " +
                         "FROM " +
-                        "md_addr ma " +
+                        "    md_addr ma " +
                         "WHERE " +
-                        "ma.city_id = :cityId";
+                        "    ma.city_id = :cityId";
         MapSqlParameterSource metaDataParams = new MapSqlParameterSource()
                 .addValue("cityId", cityId);
 
@@ -111,22 +112,23 @@ public class DataAccessObject implements IDataAccessObject {
 
         final String addressSql =
                 "SELECT " +
-                        "c.city, " +
-                        "a.address, " +
-                        "a.address2, " +
-                        "a.district, " +
-                        "a.postal_code " +
+                        "    c.city, " +
+                        "    a.address, " +
+                        "    a.address2, " +
+                        "    a.district, " +
+                        "    a.postal_code " +
                         "FROM " +
-                        "address a " +
+                        "    address a " +
                         "INNER JOIN " +
-                        "city c ON c.city_id = :cityId " +
+                        "    city c ON c.city_id = :cityId " +
                         "AND a.postal_code = :postalCode";
         MapSqlParameterSource objectParams = new MapSqlParameterSource()
                 .addValue("cityId", cityId)
                 .addValue("postalCode", postalCode);
 
         Address address = jdbc.queryForObject(
-                addressSql, objectParams, (rs, rowNum) ->
+                addressSql, objectParams,
+                (rs, rowNum) ->
                         new Address.AddressBuilder()
                                 .withFirstAddress(rs.getString("address"))
                                 .withSecondAddress(rs.getString("address2"))
