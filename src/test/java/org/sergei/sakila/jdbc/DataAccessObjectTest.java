@@ -17,7 +17,7 @@ import static org.junit.Assert.assertEquals;
 public class DataAccessObjectTest {
 
     @Autowired
-    private DataAccessObject dao;
+    private IDataAccessObject dao;
 
     @Test
     public void testDataAccessObject() {

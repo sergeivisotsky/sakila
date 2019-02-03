@@ -17,7 +17,7 @@ import java.util.Objects;
  * @author Sergei Visotsky
  */
 @Repository
-public class DataAccessObject {
+public class DataAccessObject implements IDataAccessObject {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DataAccessObject.class);
 
@@ -28,6 +28,7 @@ public class DataAccessObject {
         this.dataSource = dataSource;
     }
 
+    @Override
     public PaymentFormData getPaymentFromDataAndMetaData(long paymentId) {
         NamedParameterJdbcTemplate jdbc = new NamedParameterJdbcTemplate(dataSource);
         final String paymentFormMetaDataSql =
@@ -80,6 +81,7 @@ public class DataAccessObject {
         );
     }
 
+    @Override
     public Address getAddressWithMetadata(long cityId, String postalCode) {
         NamedParameterJdbcTemplate jdbc = new NamedParameterJdbcTemplate(dataSource);
 
