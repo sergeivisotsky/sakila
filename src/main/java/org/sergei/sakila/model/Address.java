@@ -1,10 +1,13 @@
 package org.sergei.sakila.model;
 
+import com.google.errorprone.annotations.Immutable;
+
 import java.util.List;
 
 /**
  * @author Sergei Visotsky
  */
+@Immutable
 public class Address {
     //    private String city;
     private String firstAddress;

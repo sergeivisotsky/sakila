@@ -1,8 +1,6 @@
 package org.sergei.sakila.jdbc;
 
-import org.sergei.sakila.model.Address;
-import org.sergei.sakila.model.AddressMetaData;
-import org.sergei.sakila.model.FieldType;
+import org.sergei.sakila.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,10 +28,62 @@ public class DataAccessObject {
         this.dataSource = dataSource;
     }
 
+    public PaymentFormData getPaymentFromDataAndMetaData(long paymentId) {
+        NamedParameterJdbcTemplate jdbc = new NamedParameterJdbcTemplate(dataSource);
+        final String paymentFormMetaDataSql =
+                "SELECT " +
+                        "mp.ui_description, " +
+                        "mp.field_type, " +
+                        "mp.lang_type " +
+                        "FROM " +
+                        "    sakila.md_payment mp " +
+                        "WHERE " +
+                        "    mp.payment_id = :paymentId";
+        MapSqlParameterSource params = new MapSqlParameterSource()
+                .addValue("paymentId", paymentId);
+
+        List<PaymentFormMetaData> paymentFormMetaDataList = new LinkedList<>();
+        PaymentFormMetaData paymentFormMetaData = jdbc.queryForObject(
+                paymentFormMetaDataSql, params, (rs, rowNum) ->
+                        new PaymentFormMetaData.PaymentFormMetaDataBuilder()
+                                .withUiDescription(rs.getString("ui_description"))
+                                .withFieldType(FieldType.valueOf(rs.getString("field_type")))
+                                .withLanguageType(LanguageType.valueOf(rs.getString("lang_type")))
+                                .build()
+        );
+        paymentFormMetaDataList.add(paymentFormMetaData);
+
+        final String paymentFormDataSql =
+                "SELECT " +
+                        "    c.first_name, " +
+                        "    c.last_name, " +
+                        "    c.email, " +
+                        "    c.create_date, " +
+                        "    c.last_update, " +
+                        "    p.rental_id ," +
+                        "    p.amount " +
+                        "FROM " +
+                        "    sakila.customer c " +
+                        "        INNER JOIN " +
+                        "    sakila.payment p ON c.customer_id = :paymentId";
+
+        return jdbc.queryForObject(paymentFormDataSql, params, (rs, rowNum) ->
+                new PaymentFormData.PaymentFormDataBuilder()
+                        .withFirstName(rs.getString("first_name"))
+                        .withLastName(rs.getString("last_name"))
+                        .withEmail(rs.getString("email"))
+                        .withCreateDate(rs.getDate("create_date"))
+                        .withLastUpdate(rs.getDate("last_update"))
+                        .withRentalId(rs.getLong("rental_id"))
+                        .withAmount(rs.getInt("amount"))
+                        .build()
+        );
+    }
+
     public Address getAddressWithMetadata(long cityId, String postalCode) {
         NamedParameterJdbcTemplate jdbc = new NamedParameterJdbcTemplate(dataSource);
 
-        final String metaDataSql =
+        final String addressMetaDataSql =
                 "SELECT " +
                         "ma.ui_description, " +
                         "ma.fld_type " +
@@ -46,7 +96,7 @@ public class DataAccessObject {
 
         List<AddressMetaData> addressMetaDataList = new LinkedList<>();
         AddressMetaData addressMetaData = jdbc.queryForObject(
-                metaDataSql, metaDataParams, (rs, rowNum) ->
+                addressMetaDataSql, metaDataParams, (rs, rowNum) ->
                         new AddressMetaData.AddressMetaDataBuilder()
                                 .withUiDescription(rs.getString("ui_description"))
                                 .withFieldType(FieldType.valueOf(rs.getString("fld_type")))

@@ -1,10 +1,13 @@
 package org.sergei.sakila.rest.dto;
 
+import com.google.errorprone.annotations.Immutable;
+
 import java.util.List;
 
 /**
  * @author Sergei Visotsky
  */
+@Immutable
 public class AddressDTO {
     private String firstAddress;
     private String secondAddress;
@@ -13,26 +16,6 @@ public class AddressDTO {
     private List<AddressMetaDataDTO> addressMetadata;
 
     private AddressDTO() {
-    }
-
-    public String getFirstAddress() {
-        return firstAddress;
-    }
-
-    public String getSecondAddress() {
-        return secondAddress;
-    }
-
-    public String getDistrict() {
-        return district;
-    }
-
-    public String getPostalCode() {
-        return postalCode;
-    }
-
-    public List<AddressMetaDataDTO> getAddressMetadata() {
-        return addressMetadata;
     }
 
     public static final class AddressDTOBuilder {
