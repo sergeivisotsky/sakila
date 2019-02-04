@@ -33,11 +33,11 @@ public class MetaDataService implements IMetaDataService {
     }
 
     @Override
-    public List<PaymentFormDataDTO> getPaymentFromDataAndMetaData(long paymentId) {
+    public List<PaymentFormDataDTO> getPaymentFromDataAndMetaData(long customerId) {
         List<PaymentFormDataDTO> pfdDTOList = new LinkedList<>();
 
         // Find collection od all items of PaymentFormData
-        List<PaymentFormData> pfdList = dao.getPaymentFromDataAndMetaData(paymentId);
+        List<PaymentFormData> pfdList = dao.getPaymentFromDataAndMetaData(customerId);
 
         // Mapping into the DTO
         for (int i = 0; i <= pfdList.size(); i++) {

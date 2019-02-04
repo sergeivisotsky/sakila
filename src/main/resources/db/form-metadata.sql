@@ -8,13 +8,13 @@ CREATE TABLE sakila.md_addr
     REFERENCES sakila.address (city_id)
 );
 
-CREATE TABLE md_payment
+CREATE TABLE sakila.md_payment
 (
   id             NUMERIC(19)          NOT NULL PRIMARY KEY,
-  payment_id     SMALLINT(5) UNSIGNED NOT NULL,
+  customer_id    SMALLINT(5) UNSIGNED NOT NULL,
   ui_description VARCHAR(200),
   field_type     VARCHAR(20) CHECK (field_type IN ('INTEGER', 'NUMERIC', 'DATE')),
   lang_type      VARCHAR(20) CHECK (lang_type IN ('LV', 'EN')),
-  FOREIGN KEY (payment_id)
-    REFERENCES payment (payment_id)
+  FOREIGN KEY (customer_id)
+    REFERENCES payment (customer_id)
 );

@@ -9,7 +9,7 @@ import java.util.List;
  * @author Sergei Visotsky
  */
 public interface IMetaDataService {
-    List<PaymentFormDataDTO> getPaymentFromDataAndMetaData(long paymentId);
+    List<PaymentFormDataDTO> getPaymentFromDataAndMetaData(long customerId);
 
     AddressDTO getAddressWithMetadata(long cityId, long addressId);
 }

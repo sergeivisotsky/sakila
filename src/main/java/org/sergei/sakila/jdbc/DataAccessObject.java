@@ -29,19 +29,18 @@ public class DataAccessObject implements IDataAccessObject {
     }
 
     @Override
-    public List<PaymentFormData> getPaymentFromDataAndMetaData(long paymentId) {
+    public List<PaymentFormData> getPaymentFromDataAndMetaData(long customerId) {
         NamedParameterJdbcTemplate jdbc = new NamedParameterJdbcTemplate(dataSource);
         final String paymentFormMetaDataSql =
                 "SELECT " +
-                        "mp.ui_description, " +
-                        "mp.field_type, " +
-                        "mp.lang_type " +
+                        "    mp.ui_description, " +
+                        "    mp.field_type, " +
+                        "    mp.lang_type " +
                         "FROM " +
-                        "    md_payment mp " +
+                        "    sakila.md_payment mp " +
                         "WHERE " +
-                        "    mp.payment_id = :paymentId";
-        MapSqlParameterSource params = new MapSqlParameterSource()
-                .addValue("paymentId", paymentId);
+                        "    mp.customer_id = :customerId";
+        MapSqlParameterSource params = new MapSqlParameterSource("customerId", customerId);
 
         List<PaymentFormMetaData> paymentFormMetaDataList = new LinkedList<>();
         PaymentFormMetaData paymentFormMetaData = jdbc.queryForObject(
@@ -67,10 +66,10 @@ public class DataAccessObject implements IDataAccessObject {
                         "FROM " +
                         "    customer c " +
                         "        INNER JOIN " +
-                        "    payment p ON c.customer_id = :paymentId";
+                        "    payment p ON c.customer_id = :customerId";
 
-        // FIXME: Query dot work
-        return jdbc.query(paymentFormDataSql,
+        // FIXME: HTTP: 500 - No message available
+        return jdbc.query(paymentFormDataSql, params,
                 (rs, rowNum) ->
                         new PaymentFormData.PaymentFormDataBuilder()
                                 .withFirstName(rs.getString("first_name"))
