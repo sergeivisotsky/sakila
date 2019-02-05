@@ -29,10 +29,17 @@ CREATE TABLE md_translation
     REFERENCES sakila.md_frm (id)
 );
 
-insert into sakila.md_frm(id, ui_description, elem_number, field_type) values(1, 'This is test UI description', 5, 'NUMERIC');
-insert into sakila.md_frm_type(id, num_of_elem, frm_descr, md_frm_id) values(1, 5, 'This is test form description one', 1);
-insert into sakila.md_frm_type(id, num_of_elem, frm_descr, md_frm_id) values(2, 2, 'This is test form description two', 1);
-insert into sakila.md_frm_type(id, num_of_elem, frm_descr, md_frm_id) values(3, 3, 'This is test form description three', 1);
-insert into sakila.md_frm_type(id, num_of_elem, frm_descr, md_frm_id) values(4, 1, 'This is test form description four', 1);
-insert into sakila.md_translation(id, ui_description, lang_type, md_frm_id) values(1, 'This is test ui description', 'EN', 1);
-insert into sakila.md_translation(id, ui_description, lang_type, md_frm_id) values(2, 'Tas ir testa formas apraksts', 'LV', 1);
+INSERT INTO sakila.md_frm(id, ui_description, elem_number, field_type)
+VALUES (1, 'This is test UI description', 5, 'NUMERIC');
+INSERT INTO sakila.md_frm_type(id, num_of_elem, frm_descr, md_frm_id)
+VALUES (1, 5, 'This is test form description one', 1);
+INSERT INTO sakila.md_frm_type(id, num_of_elem, frm_descr, md_frm_id)
+VALUES (2, 2, 'This is test form description two', 1);
+INSERT INTO sakila.md_frm_type(id, num_of_elem, frm_descr, md_frm_id)
+VALUES (3, 3, 'This is test form description three', 1);
+INSERT INTO sakila.md_frm_type(id, num_of_elem, frm_descr, md_frm_id)
+VALUES (4, 1, 'This is test form description four', 1);
+INSERT INTO sakila.md_translation(id, ui_description, lang_type, md_frm_id)
+VALUES (1, 'This is test ui description', 'EN', 1);
+INSERT INTO sakila.md_translation(id, ui_description, lang_type, md_frm_id)
+VALUES (2, 'Tas ir testa formas apraksts', 'LV', 1);
