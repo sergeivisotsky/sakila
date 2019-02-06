@@ -19,10 +19,10 @@ CREATE TABLE md_frm_type
 
 CREATE TABLE md_translation
 (
-  id             NUMERIC(19) NOT NULL PRIMARY KEY,
-  ui_description VARCHAR(200),
-  lang_type      VARCHAR(20) CHECK (lang_type IN ('LV', 'EN')),
-  md_frm_id      NUMERIC(19) NOT NULL,
+  id        NUMERIC(19) NOT NULL PRIMARY KEY,
+  text      VARCHAR(200),
+  lang_type VARCHAR(20) CHECK (lang_type IN ('LV', 'EN')),
+  md_frm_id NUMERIC(19) NOT NULL,
   FOREIGN KEY (md_frm_id)
     REFERENCES sakila.md_frm (id)
 );

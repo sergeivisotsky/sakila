@@ -1,10 +1,9 @@
 package org.sergei.sakila.config;
 
-import org.sergei.sakila.config.properties.DatabaseProperties;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import javax.sql.DataSource;
@@ -21,11 +20,16 @@ public class DatabaseConfig {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
 
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        dataSource.setUrl("jdbc:mysql://localhost:3306/sakila_dev");
+        dataSource.setUrl("jdbc:mysql://localhost:3306/sakila");
         dataSource.setUsername("service");
         dataSource.setPassword("service");
 
         return dataSource;
+    }
+
+    @Bean
+    public NamedParameterJdbcTemplate jdbc() {
+        return new NamedParameterJdbcTemplate(dataSource());
     }
 
 
