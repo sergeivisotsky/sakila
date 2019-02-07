@@ -14,7 +14,7 @@ CREATE TABLE md_frm_type
   frm_descr   VARCHAR(100) NOT NULL,
   md_frm_id   NUMERIC(19)  NOT NULL,
   FOREIGN KEY (md_frm_id)
-    REFERENCES sakila.md_frm (id)
+    REFERENCES md_frm (id)
 );
 
 CREATE TABLE md_translation
@@ -24,20 +24,20 @@ CREATE TABLE md_translation
   lang_type VARCHAR(20) CHECK (lang_type IN ('LV', 'EN')),
   md_frm_id NUMERIC(19) NOT NULL,
   FOREIGN KEY (md_frm_id)
-    REFERENCES sakila.md_frm (id)
+    REFERENCES md_frm (id)
 );
 
-CREATE TABLE sakila.md_addr
+CREATE TABLE md_addr
 (
   id             NUMERIC(19)          NOT NULL PRIMARY KEY,
   ui_description VARCHAR(200)         NOT NULL,
   city_id        SMALLINT(5) UNSIGNED NOT NULL,
   field_type     VARCHAR(20) CHECK (field_type IN ('INTEGER', 'NUMERIC', 'DATE')),
   FOREIGN KEY (city_id)
-    REFERENCES sakila.address (city_id)
+    REFERENCES address (city_id)
 );
 
-CREATE TABLE sakila.md_payment
+CREATE TABLE md_payment
 (
   id             NUMERIC(19)          NOT NULL PRIMARY KEY,
   customer_id    SMALLINT(5) UNSIGNED NOT NULL,
@@ -48,17 +48,17 @@ CREATE TABLE sakila.md_payment
     REFERENCES payment (customer_id)
 );
 
-INSERT INTO sakila.md_frm(id, ui_description, elem_number, field_type)
+INSERT INTO md_frm(id, ui_description, elem_number, field_type)
 VALUES (1, 'This is test UI description', 5, 'NUMERIC');
-INSERT INTO sakila.md_frm_type(id, num_of_elem, frm_descr, md_frm_id)
+INSERT INTO md_frm_type(id, num_of_elem, frm_descr, md_frm_id)
 VALUES (1, 5, 'This is test form description one', 1);
-INSERT INTO sakila.md_frm_type(id, num_of_elem, frm_descr, md_frm_id)
+INSERT INTO md_frm_type(id, num_of_elem, frm_descr, md_frm_id)
 VALUES (2, 2, 'This is test form description two', 1);
-INSERT INTO sakila.md_frm_type(id, num_of_elem, frm_descr, md_frm_id)
+INSERT INTO md_frm_type(id, num_of_elem, frm_descr, md_frm_id)
 VALUES (3, 3, 'This is test form description three', 1);
-INSERT INTO sakila.md_frm_type(id, num_of_elem, frm_descr, md_frm_id)
+INSERT INTO md_frm_type(id, num_of_elem, frm_descr, md_frm_id)
 VALUES (4, 1, 'This is test form description four', 1);
-INSERT INTO sakila.md_translation(id, ui_description, lang_type, md_frm_id)
+INSERT INTO md_translation(id, text, lang_type, md_frm_id)
 VALUES (1, 'This is test ui description', 'EN', 1);
-INSERT INTO sakila.md_translation(id, ui_description, lang_type, md_frm_id)
+INSERT INTO md_translation(id, text, lang_type, md_frm_id)
 VALUES (2, 'Tas ir testa formas apraksts', 'LV', 1);
