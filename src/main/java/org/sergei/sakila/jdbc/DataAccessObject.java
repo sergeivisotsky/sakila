@@ -1,12 +1,11 @@
 package org.sergei.sakila.jdbc;
 
+import com.google.common.collect.ImmutableMap;
 import org.sergei.sakila.Loggers;
 import org.sergei.sakila.model.FieldType;
 import org.sergei.sakila.model.FormMetaData;
 import org.sergei.sakila.model.FormType;
 import org.sergei.sakila.model.LanguageType;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -29,7 +28,7 @@ public class DataAccessObject implements IDataAccessObject {
 
     @Override
     public FormMetaData getFormMetaData(long formId, String langType) {
-        MapSqlParameterSource paramsFormType = new MapSqlParameterSource("formId", formId);
+        ImmutableMap<String, Object> paramsFormType = ImmutableMap.of("formId", formId);
         final String formTypeSql =
                 "SELECT " +
                         "    ft.num_of_elem, ft.frm_descr " +
@@ -51,9 +50,7 @@ public class DataAccessObject implements IDataAccessObject {
                 }
         );
 
-        MapSqlParameterSource formMetaDataParams = new MapSqlParameterSource()
-                .addValue("formId", formId)
-                .addValue("langType", langType);
+        ImmutableMap<String, Object> formMetaDataParams = ImmutableMap.of("formId", formId, "langType", langType);
 
         final String formMetaDataSql =
                 "SELECT " +

@@ -1,4 +1,4 @@
-package org.sergei.sakila.config.properties;
+package org.sergei.sakila;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
