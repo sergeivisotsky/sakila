@@ -16,24 +16,49 @@
             <Pattern>%d %p %C{1.} [%t] %m%n</Pattern>
         </encoder>
 
-        <!--<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            &lt;!&ndash; rollover daily and when the file reaches 10 MegaBytes &ndash;&gt;
-            <fileNamePattern>${LOGS}/archived/sakila-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- rollover daily and when the file reaches 10 MegaBytes -->
+            <fileNamePattern>${LOGS}/archived/auth-service-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <maxHistory>30</maxHistory>
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-                <maxFileSize>10MB</maxFileSize>
+                <maxFileSize>100MB</maxFileSize>
             </timeBasedFileNamingAndTriggeringPolicy>
-        </rollingPolicy>-->
+        </rollingPolicy>
     </appender>
+
+    <!--<appender name="sql" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOGS}/sql.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOGS}/archived/sql_%d{yyyy-MM-dd_HH}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${pattern}</pattern>
+        </encoder>
+    </appender>-->
 
     <!--Disabled due to the NumberFormatException what is caused by the bug in Swagger internals-->
     <logger name="io.swagger.models.parameters.AbstractSerializableParameter" level="ERROR"/>
 
-    <logger name="org.sergei.sakila" level="info, debug"/>
+    <springProfile name="dev">
+        <logger name="org.sergei.sakila" level="info, debug"/>
 
-    <root level="info, debug">
-        <appender-ref ref="file"/>
-        <appender-ref ref="stdout"/>
-    </root>
+        <root level="info, debug">
+            <appender-ref ref="file"/>
+            <appender-ref ref="stdout"/>
+        </root>
 
+        <!--<logger name="org.sergei.sakila.Loggers" level="info, debug" additivity="true">
+            <appender-ref ref="sql"/>
+        </logger>-->
+    </springProfile>
+
+    <springProfile name="prod">
+        <logger name="org.sergei.sakila" level="info"/>
+
+        <root level="info">
+            <appender-ref ref="file"/>
+            <appender-ref ref="stdout"/>
+        </root>
+    </springProfile>
 </configuration>
