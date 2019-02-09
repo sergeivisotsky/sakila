@@ -1,5 +1,7 @@
 package org.sergei.sakila.config;
 
+import org.sergei.sakila.jdbc.CachingDataAccessObject;
+import org.sergei.sakila.jdbc.DataAccessObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -66,6 +68,11 @@ public class SakilaConfigurer {
                 .description("Methods for experiment")
                 .version("1.0")
                 .build();
+    }
+
+    @Bean
+    public CachingDataAccessObject cachingDataAccessObject(DataSource dataSource) {
+        return new CachingDataAccessObject(new DataAccessObject(dataSource));
     }
 
 }

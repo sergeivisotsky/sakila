@@ -1,0 +1,70 @@
+package org.sergei.sakila.jdbc;
+
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
+import org.sergei.sakila.model.CustomerAddress;
+import org.sergei.sakila.model.FormMetaData;
+
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+
+/**
+ * @author Sergei Visotsky
+ */
+public class CachingDataAccessObject implements IDataAccessObject {
+
+    private Cache<ParametersKey, Object> cache;
+
+    private final IDataAccessObject dao;
+
+    public CachingDataAccessObject(IDataAccessObject dao) {
+        this.dao = dao;
+        cache = CacheBuilder.newBuilder()
+                .maximumSize(100)
+                .expireAfterAccess(8, TimeUnit.HOURS)
+                .build();
+    }
+
+    @Override
+    public FormMetaData getFormMetaData(long formId, String langType) {
+        FormMetaData formMetaData = null;
+        try {
+            formMetaData = (FormMetaData) cache.get(new ParametersKey(formId, langType), () -> dao.getFormMetaData(formId, langType));
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return formMetaData;
+    }
+
+    @Override
+    public List<CustomerAddress> getAddressesOfAllCustomers() {
+        return dao.getAddressesOfAllCustomers();
+    }
+
+    private static class ParametersKey {
+        Long formId;
+        String langType;
+
+        ParametersKey(Long formId, String langType) {
+            this.formId = formId;
+            this.langType = langType;
+        }
+
+        public Long getFormId() {
+            return formId;
+        }
+
+        public void setFormId(Long formId) {
+            this.formId = formId;
+        }
+
+        public String getLangType() {
+            return langType;
+        }
+
+        public void setLangType(String langType) {
+            this.langType = langType;
+        }
+    }
+}
