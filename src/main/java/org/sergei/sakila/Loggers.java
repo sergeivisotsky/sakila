@@ -3,7 +3,6 @@ package org.sergei.sakila;
 import com.google.common.collect.ImmutableMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 
 /**
  * @author Sergei Visotsky
