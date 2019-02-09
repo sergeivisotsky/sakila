@@ -1,4 +1,4 @@
-package org.sergei.sakila;
+package org.sergei.sakila.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
