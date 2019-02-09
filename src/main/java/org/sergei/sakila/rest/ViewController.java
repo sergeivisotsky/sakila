@@ -1,10 +1,8 @@
 package org.sergei.sakila.rest;
 
 import org.sergei.sakila.jdbc.IDataAccessObject;
-import org.sergei.sakila.model.FieldType;
-import org.sergei.sakila.model.FormMetaData;
-import org.sergei.sakila.model.FormType;
-import org.sergei.sakila.model.LanguageType;
+import org.sergei.sakila.model.*;
+import org.sergei.sakila.rest.dto.CustomerAddressDTO;
 import org.sergei.sakila.rest.dto.FormMetaDataDTO;
 import org.sergei.sakila.rest.dto.FormTypeDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,5 +57,28 @@ public class ViewController {
                 .build();
         return new ResponseEntity<>(fmdDTO, HttpStatus.OK);
     }
+
+    @GetMapping(value = "/addresses", produces = "application/json")
+    public ResponseEntity<List<CustomerAddressDTO>> getAllAddresses() {
+        List<CustomerAddress> customerAddresses = dao.getAddressesOfAllCustomers();
+
+        List<CustomerAddressDTO> customerAddressesDTOS = new LinkedList<>();
+
+        customerAddresses.forEach(customerAddress -> {
+            CustomerAddressDTO customerAddressDTO = CustomerAddressDTO.CustomerAddressDTOBuilder.aCustomerAddressDTO()
+                    .withFirstName(customerAddress.getFirstName())
+                    .withLastName(customerAddress.getLastName())
+                    .withEmail(customerAddress.getEmail())
+                    .withAddress(customerAddress.getAddress())
+                    .withDistrict(customerAddress.getDistrict())
+                    .withCity(customerAddress.getCity())
+                    .withCountry(customerAddress.getCountry())
+                    .build();
+            customerAddressesDTOS.add(customerAddressDTO);
+        });
+
+        return new ResponseEntity<>(customerAddressesDTOS, HttpStatus.OK);
+    }
+
 
 }

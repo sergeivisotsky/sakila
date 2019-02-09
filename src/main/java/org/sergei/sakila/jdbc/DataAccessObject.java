@@ -2,16 +2,13 @@ package org.sergei.sakila.jdbc;
 
 import com.google.common.collect.ImmutableMap;
 import org.sergei.sakila.Loggers;
-import org.sergei.sakila.model.FieldType;
-import org.sergei.sakila.model.FormMetaData;
-import org.sergei.sakila.model.FormType;
-import org.sergei.sakila.model.LanguageType;
+import org.sergei.sakila.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Sergei Visotsky
@@ -72,6 +69,39 @@ public class DataAccessObject implements IDataAccessObject {
                                 .withFormDescription(rs.getString("text"))
                                 .withFormTypes(Collections.singletonList(formType))
                                 .build()
+        );
+    }
+
+    @Override
+    public List<CustomerAddress> getAddressesOfAllCustomers() {
+        final String allAddressesSql =
+                "SELECT \n" +
+                        "    c.first_name,\n" +
+                        "    c.last_name,\n" +
+                        "    c.email,\n" +
+                        "    a.address,\n" +
+                        "    a.district,\n" +
+                        "    ci.city,\n" +
+                        "    co.country\n" +
+                        "FROM\n" +
+                        "    customer c\n" +
+                        "        LEFT OUTER JOIN\n" +
+                        "    address a ON c.address_id = a.address_id\n" +
+                        "        LEFT OUTER JOIN\n" +
+                        "    city ci ON a.city_id = ci.city_id\n" +
+                        "        LEFT OUTER JOIN\n" +
+                        "    country co ON ci.country_id = co.country_id";
+        return jdbc.query(allAddressesSql,
+                (rs, rowNum) ->
+                    new CustomerAddress.UserAddressBuilder()
+                            .withFirstName(rs.getString("first_name"))
+                            .withLastName(rs.getString("last_name"))
+                            .withEmail(rs.getString("email"))
+                            .withAddress(rs.getString("address"))
+                            .withDistrict(rs.getString("district"))
+                            .withCity(rs.getString("city"))
+                            .withCountry(rs.getString("country"))
+                            .build()
         );
     }
 }

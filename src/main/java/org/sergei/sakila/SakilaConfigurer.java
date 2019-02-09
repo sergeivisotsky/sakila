@@ -28,7 +28,8 @@ public class SakilaConfigurer {
     private final DatabaseProperties dbProp;
 
     @Autowired
-    public SakilaConfigurer(@Qualifier(value = "databaseProperties") DatabaseProperties dbProp) {
+    public SakilaConfigurer(@Qualifier(value = "databaseProperties")
+                                    DatabaseProperties dbProp) {
         this.dbProp = dbProp;
     }
 
