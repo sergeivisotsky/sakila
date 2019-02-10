@@ -62,3 +62,57 @@ INSERT INTO md_translation(id, text, lang_type, md_frm_id)
 VALUES (1, 'This is test ui description', 'EN', 1);
 INSERT INTO md_translation(id, text, lang_type, md_frm_id)
 VALUES (2, 'Tas ir testa formas apraksts', 'LV', 1);
+
+-- Stored procedures
+DELIMITER $$
+
+CREATE PROCEDURE get_form_type(IN form_id NUMERIC(19))
+  READS SQL DATA
+BEGIN
+  SELECT
+    ft.num_of_elem,
+    ft.frm_descr
+  FROM
+    md_frm_type ft
+  WHERE
+      ft.md_frm_id = form_id;
+END $$
+
+CREATE PROCEDURE get_form_metadata(IN form_id NUMERIC(19), IN lang_type VARCHAR(20))
+  READS SQL DATA
+BEGIN
+  SELECT
+    f.ui_description,
+    f.elem_number,
+    f.field_type,
+    t.lang_type,
+    t.text
+  FROM
+    md_frm f
+      JOIN
+    md_translation t ON t.md_frm_id = f.id
+  WHERE
+      f.id = form_id
+    AND t.lang_type = lang_type;
+END $$
+
+CREATE PROCEDURE get_addresses_of_all_customers()
+  READS SQL DATA
+BEGIN
+  SELECT
+    c.first_name,
+    c.last_name,
+    c.email,
+    a.address,
+    a.district,
+    ci.city,
+    co.country
+  FROM
+    customer c
+      LEFT OUTER JOIN
+    address a ON c.address_id = a.address_id
+      LEFT OUTER JOIN
+    city ci ON a.city_id = ci.city_id
+      LEFT OUTER JOIN
+    country co ON ci.country_id = co.country_id;
+END $$
