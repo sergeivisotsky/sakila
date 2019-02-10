@@ -26,8 +26,8 @@ public class ViewService implements IViewService {
 
 
     @Override
-    public FormMetaDataDTO getFormMetaData(long formId, String langCode) {
-        FormMetaData fmd = dao.getFormMetaData(formId, langCode);
+    public FormMetaDataDTO getFormMetaData(long formId, String viewName, String langCode) {
+        FormMetaData fmd = dao.getFormMetaData(formId, viewName, langCode);
 
         List<FormType> formType = fmd.getFormTypes();
         List<FormTypeDTO> formTypeDTO = new LinkedList<>();
@@ -42,10 +42,10 @@ public class ViewService implements IViewService {
         });
 
         return FormMetaDataDTO.FormMetaDataDTOBuilder.aFormMetaDataDTO()
+                .withViewName(fmd.getViewName())
                 .withUiDescription(fmd.getUiDescription())
-                .withNumberOfElements(fmd.getNumberOfElements())
                 .withFieldType(FieldType.valueOf(String.valueOf(fmd.getFieldType())))
-                .withLanguageType(LanguageType.valueOf(String.valueOf(fmd.getLanguageType())))
+                .withLanguageCode(LanguageType.valueOf(String.valueOf(fmd.getLanguageCode())))
                 .withFormDescription(fmd.getFormDescription())
                 .withFormTypes(formTypeDTO)
                 .build();

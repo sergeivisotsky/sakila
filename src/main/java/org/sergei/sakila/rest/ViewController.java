@@ -1,8 +1,9 @@
 package org.sergei.sakila.rest;
 
+import io.swagger.annotations.ApiOperation;
+import org.sergei.sakila.service.IViewService;
 import org.sergei.sakila.service.dto.CustomerAddressDTO;
 import org.sergei.sakila.service.dto.FormMetaDataDTO;
-import org.sergei.sakila.service.IViewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,12 +28,15 @@ public class ViewController {
         this.viewService = viewService;
     }
 
+    @ApiOperation("Get metadata to draw form property e.g. generate specific amount of fields, its types, etc.")
     @GetMapping(value = "/metadata", produces = "application/json")
     public ResponseEntity<FormMetaDataDTO> getFormMetaData(@RequestParam("formId") long formId,
+                                                           @RequestParam("viewName") String viewName,
                                                            @RequestParam("langCode") String langCode) {
-        return new ResponseEntity<>(viewService.getFormMetaData(formId, langCode), HttpStatus.OK);
+        return new ResponseEntity<>(viewService.getFormMetaData(formId, viewName, langCode), HttpStatus.OK);
     }
 
+    @ApiOperation("Get addresses of all existing customers")
     @GetMapping(value = "/addresses", produces = "application/json")
     public ResponseEntity<List<CustomerAddressDTO>> getAllAddresses() {
         return new ResponseEntity<>(viewService.getAllAddresses(), HttpStatus.OK);

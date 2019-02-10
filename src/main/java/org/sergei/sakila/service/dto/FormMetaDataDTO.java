@@ -12,10 +12,10 @@ import java.util.List;
  */
 @Immutable
 public class FormMetaDataDTO {
+    private String viewName;
     private String uiDescription;
-    private Integer numberOfElements;
     private FieldType fieldType;
-    private LanguageType languageType;
+    private LanguageType languageCode;
     private String formDescription;
 
     private List<FormTypeDTO> formTypes = Collections.emptyList();
@@ -23,20 +23,20 @@ public class FormMetaDataDTO {
     private FormMetaDataDTO() {
     }
 
-    public String getUiDescription() {
-        return uiDescription;
+    public String getViewName() {
+        return viewName;
     }
 
-    public Integer getNumberOfElements() {
-        return numberOfElements;
+    public String getUiDescription() {
+        return uiDescription;
     }
 
     public FieldType getFieldType() {
         return fieldType;
     }
 
-    public LanguageType getLanguageType() {
-        return languageType;
+    public LanguageType getLanguageCode() {
+        return languageCode;
     }
 
     public String getFormDescription() {
@@ -48,10 +48,10 @@ public class FormMetaDataDTO {
     }
 
     public static final class FormMetaDataDTOBuilder {
+        private String viewName;
         private String uiDescription;
-        private Integer numberOfElements;
         private FieldType fieldType;
-        private LanguageType languageType;
+        private LanguageType languageCode;
         private String formDescription;
         private List<FormTypeDTO> formTypes = Collections.emptyList();
 
@@ -62,13 +62,13 @@ public class FormMetaDataDTO {
             return new FormMetaDataDTOBuilder();
         }
 
-        public FormMetaDataDTOBuilder withUiDescription(String uiDescription) {
-            this.uiDescription = uiDescription;
+        public FormMetaDataDTOBuilder withViewName(String viewName) {
+            this.viewName = viewName;
             return this;
         }
 
-        public FormMetaDataDTOBuilder withNumberOfElements(Integer numberOfElements) {
-            this.numberOfElements = numberOfElements;
+        public FormMetaDataDTOBuilder withUiDescription(String uiDescription) {
+            this.uiDescription = uiDescription;
             return this;
         }
 
@@ -77,8 +77,8 @@ public class FormMetaDataDTO {
             return this;
         }
 
-        public FormMetaDataDTOBuilder withLanguageType(LanguageType languageType) {
-            this.languageType = languageType;
+        public FormMetaDataDTOBuilder withLanguageCode(LanguageType languageCode) {
+            this.languageCode = languageCode;
             return this;
         }
 
@@ -94,12 +94,12 @@ public class FormMetaDataDTO {
 
         public FormMetaDataDTO build() {
             FormMetaDataDTO formMetaDataDTO = new FormMetaDataDTO();
-            formMetaDataDTO.uiDescription = this.uiDescription;
-            formMetaDataDTO.formTypes = this.formTypes;
             formMetaDataDTO.fieldType = this.fieldType;
+            formMetaDataDTO.viewName = this.viewName;
+            formMetaDataDTO.languageCode = this.languageCode;
             formMetaDataDTO.formDescription = this.formDescription;
-            formMetaDataDTO.numberOfElements = this.numberOfElements;
-            formMetaDataDTO.languageType = this.languageType;
+            formMetaDataDTO.formTypes = this.formTypes;
+            formMetaDataDTO.uiDescription = this.uiDescription;
             return formMetaDataDTO;
         }
     }

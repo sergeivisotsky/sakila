@@ -24,7 +24,7 @@ public class DataAccessObjectTest {
 
     @Test
     public void getFormMetaDataTest() {
-        FormMetaData formMetaData = dao.getFormMetaData(1, "LV");
+        FormMetaData formMetaData = dao.getFormMetaData(1, "cusotmer_view", "LV");
         assertEquals("This is test UI description", formMetaData.getUiDescription());
     }
 

@@ -20,7 +20,7 @@ public class DataAccessObject implements IDataAccessObject {
     }
 
     @Override
-    public FormMetaData getFormMetaData(long formId, String langType) {
+    public FormMetaData getFormMetaData(long formId, String viewName, String langType) {
         NamedParameterJdbcTemplate jdbc = new NamedParameterJdbcTemplate(dataSource);
         ImmutableMap<String, Object> paramsFormType = ImmutableMap.of("formId", formId);
         String[] formDescription = new String[1];
@@ -36,14 +36,17 @@ public class DataAccessObject implements IDataAccessObject {
                 }
         );
 
-        ImmutableMap<String, Object> formMetaDataParams = ImmutableMap.of("formId", formId, "langType", langType);
-        return jdbc.queryForObject("call get_form_metadata(:formId, :langType)", formMetaDataParams,
+        ImmutableMap<String, Object> formMetaDataParams = ImmutableMap.of(
+                "formId", formId,
+                "viewName", viewName,
+                "langCode", langType);
+        return jdbc.queryForObject("call get_form_metadata(:formId, :viewName, :langCode)", formMetaDataParams,
                 (rs, rowNum) ->
                         new FormMetaData.FormMetaDataBuilder()
+                                .withViewName(rs.getString("view_name"))
                                 .withUiDescription(rs.getString("ui_description"))
-                                .withNumberOfElements(rs.getInt("elem_number"))
                                 .withFieldType(FieldType.valueOf(rs.getString("field_type")))
-                                .withLanguageType(LanguageType.valueOf(rs.getString("lang_type")))
+                                .withLanguageCode(LanguageType.valueOf(rs.getString("lang_code")))
                                 .withFormDescription(rs.getString("text"))
                                 .withFormTypes(Collections.singletonList(formType))
                                 .build()

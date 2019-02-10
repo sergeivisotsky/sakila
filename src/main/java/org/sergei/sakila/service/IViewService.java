@@ -9,7 +9,7 @@ import java.util.List;
  * @author Sergei Visotsky
  */
 public interface IViewService {
-    FormMetaDataDTO getFormMetaData(long formId, String langCode);
+    FormMetaDataDTO getFormMetaData(long formId, String viewName, String langCode);
 
     List<CustomerAddressDTO> getAllAddresses();
 }

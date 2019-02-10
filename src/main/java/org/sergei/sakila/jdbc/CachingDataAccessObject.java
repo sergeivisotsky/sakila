@@ -27,10 +27,11 @@ public class CachingDataAccessObject implements IDataAccessObject {
     }
 
     @Override
-    public FormMetaData getFormMetaData(long formId, String langType) {
+    public FormMetaData getFormMetaData(long formId, String viweName, String langType) {
         FormMetaData formMetaData = null;
         try {
-            formMetaData = (FormMetaData) cache.get(new ParametersKey(formId, langType), () -> dao.getFormMetaData(formId, langType));
+            formMetaData = (FormMetaData) cache.get(new ParametersKey(formId, langType),
+                    () -> dao.getFormMetaData(formId, viweName, langType));
         } catch (ExecutionException e) {
             e.printStackTrace();
         }

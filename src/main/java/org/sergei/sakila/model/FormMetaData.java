@@ -10,10 +10,10 @@ import java.util.List;
  */
 @Immutable
 public class FormMetaData {
+    private String viewName;
     private String uiDescription;
-    private Integer numberOfElements;
     private FieldType fieldType;
-    private LanguageType languageType;
+    private LanguageType languageCode;
     private String formDescription;
 
     private List<FormType> formTypes = Collections.emptyList();
@@ -21,20 +21,20 @@ public class FormMetaData {
     private FormMetaData() {
     }
 
-    public String getUiDescription() {
-        return uiDescription;
+    public String getViewName() {
+        return viewName;
     }
 
-    public Integer getNumberOfElements() {
-        return numberOfElements;
+    public String getUiDescription() {
+        return uiDescription;
     }
 
     public FieldType getFieldType() {
         return fieldType;
     }
 
-    public LanguageType getLanguageType() {
-        return languageType;
+    public LanguageType getLanguageCode() {
+        return languageCode;
     }
 
     public String getFormDescription() {
@@ -46,10 +46,10 @@ public class FormMetaData {
     }
 
     public static final class FormMetaDataBuilder {
+        private String viewName;
         private String uiDescription;
-        private Integer numberOfElements;
         private FieldType fieldType;
-        private LanguageType languageType;
+        private LanguageType languageCode;
         private String formDescription;
         private List<FormType> formTypes = Collections.emptyList();
 
@@ -60,13 +60,13 @@ public class FormMetaData {
             return new FormMetaDataBuilder();
         }
 
-        public FormMetaDataBuilder withUiDescription(String uiDescription) {
-            this.uiDescription = uiDescription;
+        public FormMetaDataBuilder withViewName(String viewName) {
+            this.viewName = viewName;
             return this;
         }
 
-        public FormMetaDataBuilder withNumberOfElements(Integer numberOfElements) {
-            this.numberOfElements = numberOfElements;
+        public FormMetaDataBuilder withUiDescription(String uiDescription) {
+            this.uiDescription = uiDescription;
             return this;
         }
 
@@ -75,8 +75,8 @@ public class FormMetaData {
             return this;
         }
 
-        public FormMetaDataBuilder withLanguageType(LanguageType languageType) {
-            this.languageType = languageType;
+        public FormMetaDataBuilder withLanguageCode(LanguageType languageCode) {
+            this.languageCode = languageCode;
             return this;
         }
 
@@ -92,12 +92,12 @@ public class FormMetaData {
 
         public FormMetaData build() {
             FormMetaData formMetaData = new FormMetaData();
-            formMetaData.languageType = this.languageType;
-            formMetaData.fieldType = this.fieldType;
             formMetaData.formTypes = this.formTypes;
             formMetaData.formDescription = this.formDescription;
             formMetaData.uiDescription = this.uiDescription;
-            formMetaData.numberOfElements = this.numberOfElements;
+            formMetaData.fieldType = this.fieldType;
+            formMetaData.viewName = this.viewName;
+            formMetaData.languageCode = this.languageCode;
             return formMetaData;
         }
     }
