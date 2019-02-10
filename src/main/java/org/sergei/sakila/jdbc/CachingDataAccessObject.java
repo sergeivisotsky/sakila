@@ -21,8 +21,8 @@ public class CachingDataAccessObject implements IDataAccessObject {
     public CachingDataAccessObject(IDataAccessObject dao) {
         this.dao = dao;
         cache = CacheBuilder.newBuilder()
-                .maximumSize(100)
-                .expireAfterAccess(8, TimeUnit.HOURS)
+                .maximumSize(800)
+                .expireAfterWrite(8, TimeUnit.HOURS)
                 .build();
     }
 
