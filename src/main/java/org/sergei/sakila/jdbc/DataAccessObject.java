@@ -25,11 +25,11 @@ public class DataAccessObject implements IDataAccessObject {
         NamedParameterJdbcTemplate jdbc = new NamedParameterJdbcTemplate(dataSource);
         ImmutableMap<String, Object> paramsFormType = ImmutableMap.of("formId", formId);
         final String formTypeSql =
-                "SELECT " +
-                        "    ft.num_of_elem, ft.frm_descr " +
-                        "FROM " +
-                        "    md_frm_type ft " +
-                        "WHERE " +
+                "SELECT \n" +
+                        "    ft.num_of_elem, ft.frm_descr\n" +
+                        "FROM\n" +
+                        "    md_frm_type ft\n" +
+                        "WHERE\n" +
                         "    ft.md_frm_id = :formId";
         Loggers.sql(formTypeSql, paramsFormType);
         String[] formDescription = new String[1];
@@ -48,13 +48,17 @@ public class DataAccessObject implements IDataAccessObject {
         ImmutableMap<String, Object> formMetaDataParams = ImmutableMap.of("formId", formId, "langType", langType);
 
         final String formMetaDataSql =
-                "SELECT " +
-                        "    f.ui_description, f.elem_number, f.field_type, t.lang_type, t.text " +
-                        "FROM " +
-                        "    md_frm f " +
-                        "        JOIN " +
-                        "    md_translation t ON t.md_frm_id = f.id " +
-                        "WHERE " +
+                "SELECT \n" +
+                        "    f.ui_description,\n" +
+                        "    f.elem_number,\n" +
+                        "    f.field_type,\n" +
+                        "    t.lang_type,\n" +
+                        "    t.text\n" +
+                        "FROM\n" +
+                        "    md_frm f\n" +
+                        "        JOIN\n" +
+                        "    md_translation t ON t.md_frm_id = f.id\n" +
+                        "WHERE\n" +
                         "    f.id = :formId AND t.lang_type = :langType";
 
         return jdbc.queryForObject(formMetaDataSql, formMetaDataParams,
