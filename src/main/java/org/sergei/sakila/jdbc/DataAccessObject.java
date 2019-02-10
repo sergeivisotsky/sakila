@@ -1,7 +1,6 @@
 package org.sergei.sakila.jdbc;
 
 import com.google.common.collect.ImmutableMap;
-import org.sergei.sakila.Loggers;
 import org.sergei.sakila.model.*;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
