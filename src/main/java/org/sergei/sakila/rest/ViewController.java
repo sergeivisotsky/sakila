@@ -1,7 +1,7 @@
 package org.sergei.sakila.rest;
 
-import org.sergei.sakila.rest.dto.CustomerAddressDTO;
-import org.sergei.sakila.rest.dto.FormMetaDataDTO;
+import org.sergei.sakila.service.dto.CustomerAddressDTO;
+import org.sergei.sakila.service.dto.FormMetaDataDTO;
 import org.sergei.sakila.service.IViewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

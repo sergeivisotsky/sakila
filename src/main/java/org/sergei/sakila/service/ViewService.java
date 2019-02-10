@@ -2,9 +2,9 @@ package org.sergei.sakila.service;
 
 import org.sergei.sakila.jdbc.IDataAccessObject;
 import org.sergei.sakila.model.*;
-import org.sergei.sakila.rest.dto.CustomerAddressDTO;
-import org.sergei.sakila.rest.dto.FormMetaDataDTO;
-import org.sergei.sakila.rest.dto.FormTypeDTO;
+import org.sergei.sakila.service.dto.CustomerAddressDTO;
+import org.sergei.sakila.service.dto.FormMetaDataDTO;
+import org.sergei.sakila.service.dto.FormTypeDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

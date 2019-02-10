@@ -1,7 +1,7 @@
 package org.sergei.sakila.service;
 
-import org.sergei.sakila.rest.dto.CustomerAddressDTO;
-import org.sergei.sakila.rest.dto.FormMetaDataDTO;
+import org.sergei.sakila.service.dto.CustomerAddressDTO;
+import org.sergei.sakila.service.dto.FormMetaDataDTO;
 
 import java.util.List;
 

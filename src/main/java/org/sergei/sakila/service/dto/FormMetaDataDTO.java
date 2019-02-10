@@ -1,4 +1,4 @@
-package org.sergei.sakila.rest.dto;
+package org.sergei.sakila.service.dto;
 
 import com.google.errorprone.annotations.Immutable;
 import org.sergei.sakila.model.FieldType;
