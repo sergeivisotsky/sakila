@@ -1,6 +1,6 @@
 package org.sergei.sakila.model;
 
-import jdk.nashorn.internal.ir.annotations.Immutable;
+import com.google.errorprone.annotations.Immutable;
 
 /**
  * @author Sergei Visotsky
