@@ -10,6 +10,9 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * Caching class to increase performance but database response into
+ * the cache and get it when it needs ot
+ *
  * @author Sergei Visotsky
  */
 public class CachingDataAccessObject implements IDataAccessObject {
@@ -18,6 +21,11 @@ public class CachingDataAccessObject implements IDataAccessObject {
 
     private final IDataAccessObject dao;
 
+    /**
+     * Define cache size, expiration after write and more things
+     *
+     * @param dao define DAO object to get persistence methods
+     */
     public CachingDataAccessObject(IDataAccessObject dao) {
         this.dao = dao;
         cache = CacheBuilder.newBuilder()
@@ -30,6 +38,7 @@ public class CachingDataAccessObject implements IDataAccessObject {
     public FormMetaData getFormMetaData(long formId, String viweName, String langType) {
         FormMetaData formMetaData = null;
         try {
+            // puts and gets data from the cache by roles defined in constructor
             formMetaData = (FormMetaData) cache.get(new ParametersKey(formId, langType),
                     () -> dao.getFormMetaData(formId, viweName, langType));
         } catch (ExecutionException e) {
