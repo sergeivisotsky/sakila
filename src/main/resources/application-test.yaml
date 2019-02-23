@@ -1,5 +1,5 @@
 datasource:
   driver-class-name: com.mysql.cj.jdbc.Driver
   url: jdbc:mysql://localhost:3306/sakila_test
-  username: service
-  password: service
+  username: sakila
+  password: sakila
